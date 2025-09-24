@@ -166,8 +166,10 @@ class StreamFusionWindow(QtWidgets.QWidget):
             self._play_selected()
 
     def _handle_player_state_change(self, state: QtMultimedia.QMediaPlayer.State) -> None:
-        if state == QtMultimedia.QMediaPlayer.StoppedState and \
-            self._player.mediaStatus() == QtMultimedia.QMediaPlayer.EndOfMedia:
+        if (
+            state == QtMultimedia.QMediaPlayer.StoppedState
+            and self._player.mediaStatus() == QtMultimedia.QMediaPlayer.EndOfMedia
+        ):
             self._status_label.setText("Playback finished.")
         self._update_controls_state()
 
