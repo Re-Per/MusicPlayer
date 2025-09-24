@@ -11,12 +11,12 @@ from .api_client import list_songs, upload_audio
 
 
 class StreamFusionWindow(QtWidgets.QWidget):
-    """Minimal desktop UI with upload, library, and playback controls."""
+    """Desktop UI with upload, library, and playback controls."""
 
     def __init__(self) -> None:
         super().__init__()
         self.setWindowTitle("StreamFusion Prototype")
-        self.setMinimumSize(520, 360)
+        self.setMinimumSize(540, 380)
 
         self._status_label = QtWidgets.QLabel("Select a track to upload or play.")
         self._status_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -152,11 +152,13 @@ class StreamFusionWindow(QtWidgets.QWidget):
 
         original_name = item.data(QtCore.Qt.UserRole + 1) or file_path.name
         self._status_label.setText(f"Playing: {original_name}")
+        self._update_controls_state()
 
     def _stop_playback(self) -> None:
         if self._player.state() != QtMultimedia.QMediaPlayer.StoppedState:
             self._player.stop()
             self._status_label.setText("Playback stopped.")
+            self._update_controls_state()
 
     def _handle_library_double_click(self, item: QtWidgets.QListWidgetItem) -> None:
         if item:
@@ -164,10 +166,10 @@ class StreamFusionWindow(QtWidgets.QWidget):
             self._play_selected()
 
     def _handle_player_state_change(self, state: QtMultimedia.QMediaPlayer.State) -> None:
-        if state == QtMultimedia.QMediaPlayer.StoppedState:
-            # Keep friendly messaging when track naturally ends.
-            if self._player.mediaStatus() == QtMultimedia.QMediaPlayer.EndOfMedia:
-                self._status_label.setText("Playback finished.")
+        if state == QtMultimedia.QMediaPlayer.StoppedState and \
+            self._player.mediaStatus() == QtMultimedia.QMediaPlayer.EndOfMedia:
+            self._status_label.setText("Playback finished.")
+        self._update_controls_state()
 
     def _update_controls_state(self) -> None:
         has_selection = self._library_list.currentItem() is not None

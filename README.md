@@ -1,10 +1,11 @@
 # StreamFusion Prototype
 
-StreamFusion is a desktop proof-of-concept that blends the polish of major streaming platforms with room for future expansion. This prototype delivers a Python FastAPI backend, a PyQt5 desktop frontend, and a simple SQLite metadata store packaged into a single executable.
+StreamFusion is a desktop proof-of-concept that blends the polish of major streaming platforms with room for future expansion. This prototype delivers a Python FastAPI backend, a PyQt5 desktop frontend, a simple SQLite metadata store, and in-app audio playback packaged into a single executable.
 
 ## Features
 - Desktop app window titled "StreamFusion Prototype" with an **Upload My Music** button
 - Audio file upload support (MP3, WAV, AAC, FLAC, OGG)
+- In-app music library with play/stop controls to listen to uploaded tracks
 - Files stored locally under `/uploads` and metadata captured in `/db/streamfusion.db`
 - REST endpoints (`/upload`, `/list-songs`) ready for future integrations
 
@@ -36,7 +37,7 @@ StreamFusion is a desktop proof-of-concept that blends the polish of major strea
    ```bash
    python src/app.py
    ```
-   The GUI opens and the backend listens on `http://127.0.0.1:8765`.
+   The GUI opens and the backend listens on `http://127.0.0.1:8765`. Use the library list to double-click a song or select it and press **Play Selected**.
 3. **Build the Windows executable**
    ```bash
    pyinstaller --onefile --noconsole src/app.py -n StreamFusion
