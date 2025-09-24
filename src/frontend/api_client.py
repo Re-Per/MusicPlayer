@@ -2,7 +2,7 @@
 from __future__ import annotations
 
 from pathlib import Path
-from typing import Any, Dict
+from typing import Any, Dict, List
 
 import requests
 
@@ -24,6 +24,14 @@ def upload_audio(file_path: Path) -> Dict[str, Any]:
         response = requests.post(f"{BASE_URL}/upload", files=files, timeout=30)
         response.raise_for_status()
         return response.json()
+
+
+def list_songs() -> List[Dict[str, Any]]:
+    """Return the list of uploaded songs from the backend service."""
+    response = requests.get(f"{BASE_URL}/list-songs", timeout=10)
+    response.raise_for_status()
+    payload = response.json()
+    return payload.get("items", [])
 
 
 def _guess_mime_type(extension: str) -> str:
